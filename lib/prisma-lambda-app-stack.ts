@@ -50,6 +50,15 @@ export class PrismaLambdaAppStack extends Stack {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const lambdaApi = new apigateway.LambdaRestApi(this, 'fastifyAppApi', {
       handler: fastifyAppLambda,
+      proxy: false,
     });
+    const userPath = lambdaApi.root.addResource('user');
+    userPath.addMethod('GET');
+    userPath.addMethod('POST');
+    const userIdPath = userPath.addResource('{id}');
+    userIdPath.addMethod('GET');
+    userIdPath.addMethod('PUT');
+    userIdPath.addMethod('PATCH');
+    userIdPath.addMethod('DELETE');
   }
 }
