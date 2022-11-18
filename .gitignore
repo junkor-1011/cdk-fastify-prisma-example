@@ -5,6 +5,7 @@
 !.prettierrc.js
 *.d.ts
 node_modules
+.aws-sam
 
 # CDK asset staging directory
 .cdk.staging

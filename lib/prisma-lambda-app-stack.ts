@@ -47,10 +47,15 @@ export class PrismaLambdaAppStack extends Stack {
       },
     });
 
+    const helloLambda = new lambda.DockerImageFunction(this, 'helloImageFunction', {
+      code: lambda.DockerImageCode.fromImageAsset('packages/hello-world'),
+    });
+
     const lambdaApi = new apigateway.LambdaRestApi(this, 'fastifyAppApi', {
       handler: fastifyAppLambda,
       proxy: false,
     });
+    lambdaApi.root.addMethod('GET', new apigateway.LambdaIntegration(helloLambda));
     const userPath = lambdaApi.root.addResource('user');
     userPath.addMethod('GET');
     userPath.addMethod('POST');
