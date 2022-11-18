@@ -2,6 +2,10 @@
   "compilerOptions": {
     "target": "ES2018",
     "module": "commonjs",
+    "baseUrl": "./",
+    "paths": {
+      "$fastify-app/*": ["packages/fastify-app/src/*"]
+    },
     "lib": ["es2018"],
     "declaration": true,
     "esModuleInterop": true,

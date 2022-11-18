@@ -3,6 +3,7 @@ const { builtinModules } = require('node:module');
 const { defineConfig } = require('eslint-define-config');
 
 module.exports = defineConfig({
+  root: true,
   env: {
     es2021: true,
     node: true,
@@ -22,7 +23,7 @@ module.exports = defineConfig({
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['tsconfig.json', 'packages/lambda/tsconfig.json'],
+    project: ['packages/fastify-app/tsconfig.json', 'tsconfig.json'],
   },
   rules: {},
   overrides: [],

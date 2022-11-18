@@ -1,0 +1,301 @@
+openapi: 3.0.3
+info:
+  title: Fastify Example
+  description: fastify zod example
+  version: 0.0.1
+components:
+  schemas:
+    userSchemas:
+      type: object
+      properties:
+        userInputSchema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: user name
+            email:
+              type: string
+              format: email
+              description: user's email address
+            birthdate:
+              type: string
+              format: date-time
+              description: bitrth day of the user
+          required:
+            - name
+            - birthdate
+          additionalProperties: false
+        userSchema:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: user id
+            name:
+              $ref: "#/components/schemas/userSchemas/properties/userInputSchema/properties/n\
+                ame"
+            email:
+              $ref: "#/components/schemas/userSchemas/properties/userInputSchema/properties/e\
+                mail"
+            rank:
+              type: number
+              minimum: 1
+              maximum: 10
+              multipleOf: 1
+              default: 1
+              description: the rank of user
+            birthdate:
+              $ref: "#/components/schemas/userSchemas/properties/userInputSchema/properties/b\
+                irthdate"
+            createdAt:
+              type: string
+              format: date-time
+              description: signup date
+            updatedAt:
+              type: string
+              format: date-time
+              description: last modified date
+          required:
+            - id
+            - name
+            - birthdate
+            - createdAt
+            - updatedAt
+          additionalProperties: false
+        userListSchema:
+          type: array
+          items:
+            $ref: '#/components/schemas/userSchemas/properties/userSchema'
+        getUsersQuerySchema:
+          type: object
+          properties:
+            limit:
+              type: number
+              minimum: 1
+              multipleOf: 1
+              default: 100
+              description: limit
+            offset:
+              type: number
+              minimum: 0
+              multipleOf: 1
+              description: offset
+          additionalProperties: false
+        getUserParamsSchema:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: id of the user
+          required:
+            - id
+          additionalProperties: false
+        putUserParamsSchema:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: id of the user
+          required:
+            - id
+          additionalProperties: false
+        putUserRequestBodySchema:
+          type: object
+          properties:
+            name:
+              $ref: "#/components/schemas/userSchemas/properties/userInputSchema/properties/n\
+                ame"
+            email:
+              $ref: "#/components/schemas/userSchemas/properties/userInputSchema/properties/e\
+                mail"
+            birthdate:
+              $ref: "#/components/schemas/userSchemas/properties/userInputSchema/properties/b\
+                irthdate"
+            rank:
+              $ref: '#/components/schemas/userSchemas/properties/userSchema/properties/rank'
+          required:
+            - name
+            - birthdate
+          additionalProperties: false
+        patchUserParamsSchema:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: id of the user
+          required:
+            - id
+          additionalProperties: false
+        patchUserRequestBodySchema:
+          type: object
+          properties:
+            name:
+              $ref: "#/components/schemas/userSchemas/properties/userInputSchema/properties/n\
+                ame"
+            email:
+              $ref: "#/components/schemas/userSchemas/properties/userInputSchema/properties/e\
+                mail"
+            rank:
+              $ref: '#/components/schemas/userSchemas/properties/userSchema/properties/rank'
+          additionalProperties: false
+        deleteUserParamsSchema:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: id of the user
+          required:
+            - id
+          additionalProperties: false
+      required:
+        - userInputSchema
+        - userSchema
+        - userListSchema
+        - getUsersQuerySchema
+        - getUserParamsSchema
+        - putUserParamsSchema
+        - putUserRequestBodySchema
+        - patchUserParamsSchema
+        - patchUserRequestBodySchema
+        - deleteUserParamsSchema
+      additionalProperties: false
+paths:
+  /user/:
+    post:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userSchemas/properties/userInputSchema'
+      responses:
+        '201':
+          description: user was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSchemas/properties/userSchema'
+                description: user was created
+    get:
+      tags:
+        - User
+      parameters:
+        - schema:
+            type: number
+            minimum: 1
+            multipleOf: 1
+            default: 100
+          in: query
+          name: limit
+          required: false
+          description: limit
+        - schema:
+            type: number
+            minimum: 0
+            multipleOf: 1
+          in: query
+          name: offset
+          required: false
+          description: offset
+      responses:
+        '200':
+          description: users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSchemas/properties/userListSchema'
+                description: users
+  '/user/{id}':
+    get:
+      tags:
+        - User
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          in: path
+          name: id
+          required: true
+          description: id of the user
+      responses:
+        '200':
+          description: user detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSchemas/properties/userSchema'
+                description: user detail
+    delete:
+      tags:
+        - User
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          in: path
+          name: id
+          required: true
+          description: id of the user
+      responses:
+        '200':
+          description: user detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSchemas/properties/userSchema'
+                description: user detail
+    patch:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userSchemas/properties/patchUserRequestBodySchema'
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          in: path
+          name: id
+          required: true
+          description: id of the user
+      responses:
+        '200':
+          description: user detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSchemas/properties/userSchema'
+                description: user detail
+    put:
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userSchemas/properties/putUserRequestBodySchema'
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+          in: path
+          name: id
+          required: true
+          description: id of the user
+      responses:
+        '200':
+          description: user detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userSchemas/properties/userSchema'
+                description: user detail
