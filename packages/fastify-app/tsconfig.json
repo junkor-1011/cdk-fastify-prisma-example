@@ -5,7 +5,7 @@
     "module": "commonjs",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "$fastify-app/*": ["src/*"]
     },
     "noEmit": true,
     "esModuleInterop": true,

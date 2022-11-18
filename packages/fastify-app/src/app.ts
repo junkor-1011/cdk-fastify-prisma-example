@@ -5,8 +5,8 @@ import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 import fs from 'fs';
 import { withRefResolver } from 'fastify-zod';
-import { userSchemas } from './modules/user/user.schema';
-import userRoutes from './modules/user/user.route';
+import { userSchemas } from '$fastify-app/modules/user/user.schema';
+import userRoutes from '$fastify-app/modules/user/user.route';
 
 const port: number = Number(process.env.PORT ?? 3000);
 

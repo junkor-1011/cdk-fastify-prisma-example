@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
 // import { prisma } from '@/libs/prisma';
-import { prisma } from '../../libs/prisma';
+import { prisma } from '$fastify-app/libs/prisma';
 import {
   // userInputSchema,
   // userSchema,
