@@ -28,7 +28,7 @@ const commandHooksForPrisma = {
   },
 };
 
-export class PrismaLambdaAppStack extends Stack {
+export class PrismaLambdaApp2Stack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
@@ -47,17 +47,10 @@ export class PrismaLambdaAppStack extends Stack {
       },
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const lambdaApi = new apigateway.LambdaRestApi(this, 'fastifyAppApi', {
       handler: fastifyAppLambda,
-      proxy: false,
+      // proxy: true,
     });
-    const userPath = lambdaApi.root.addResource('user');
-    userPath.addMethod('GET');
-    userPath.addMethod('POST');
-    const userIdPath = userPath.addResource('{id}');
-    userIdPath.addMethod('GET');
-    userIdPath.addMethod('PUT');
-    userIdPath.addMethod('PATCH');
-    userIdPath.addMethod('DELETE');
   }
 }
