@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_INITDB_ARGS: '--encoding=UTF-8'
     hostname: postgres
-    restart: no
+    restart: 'no'
     user: root
     networks:
       - db_network
@@ -28,7 +28,7 @@ services:
     hostname: pgadmin4
     depends_on:
       - postgres
-    restart: no
+    restart: 'no'
     networks:
       - db_network
 

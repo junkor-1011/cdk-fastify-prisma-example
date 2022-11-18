@@ -8,6 +8,8 @@ import { withRefResolver } from 'fastify-zod';
 import { userSchemas } from './modules/user/user.schema';
 import userRoutes from './modules/user/user.route';
 
+const port: number = Number(process.env.PORT ?? 3000);
+
 export const server = fastify({
   logger: true,
 });
@@ -29,7 +31,7 @@ const main = async (): Promise<void> => {
     }),
   );
 
-  if (process.env.STAGE !== 'PRODUCTION') {
+  if (process.env.STAGE === 'LOCAL') {
     server.register(swaggerUI, {
       routePrefix: '/docs',
       staticCSP: true,
@@ -41,14 +43,14 @@ const main = async (): Promise<void> => {
   });
 
   try {
-    await server.listen({ port: 3000, host: '0.0.0.0' });
+    await server.listen({ port, host: '0.0.0.0' });
     console.log('Server listening on port 3000.');
   } catch (err) {
     console.log(err);
     process.exit(1);
   }
 
-  if (process.env.STAGE !== 'PRODUCTION') {
+  if (process.env.STAGE === 'LOCAL') {
     const responseYaml = await server.inject('/docs/yaml');
     fs.writeFileSync('docs/openapi.yaml', responseYaml.payload);
   }
