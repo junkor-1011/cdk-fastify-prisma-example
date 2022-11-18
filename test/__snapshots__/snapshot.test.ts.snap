@@ -104,7 +104,960 @@ exports[`snapshot test 1`] = `
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "fastifyAppApiANYApiPermissionTestStackfastifyAppApi1F207F31ANY328FE2C1": {
+    "fastifyAppApiAccountD8BAAB5C": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "fastifyAppApi4B7A160F",
+      ],
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "fastifyAppApiCloudWatchRole8AB1E821",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "fastifyAppApiCloudWatchRole8AB1E821": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "fastifyAppApiDeployment35BD0E1Ea88f9350dc2f513c8dd30fd7031b23f5": {
+      "DependsOn": [
+        "fastifyAppApiuseridDELETEC4DEADF2",
+        "fastifyAppApiuseridGET1F4C0B21",
+        "fastifyAppApiuseridPATCHE922D388",
+        "fastifyAppApiuseridPUT4A32714F",
+        "fastifyAppApiuserid3A88A7E8",
+        "fastifyAppApiuserGET75E9C1AB",
+        "fastifyAppApiuserPOST8AE508AB",
+        "fastifyAppApiuser93025BEC",
+      ],
+      "Properties": {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "fastifyAppApiDeploymentStageprod9CC17FB8": {
+      "DependsOn": [
+        "fastifyAppApiAccountD8BAAB5C",
+      ],
+      "Properties": {
+        "DeploymentId": {
+          "Ref": "fastifyAppApiDeployment35BD0E1Ea88f9350dc2f513c8dd30fd7031b23f5",
+        },
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "fastifyAppApiuser93025BEC": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "fastifyAppApi4B7A160F",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "user",
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "fastifyAppApiuserGET75E9C1AB": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "FastifyAppLambda6A8D8BC0",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "fastifyAppApiuser93025BEC",
+        },
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "fastifyAppApiuserGETApiPermissionTestStackfastifyAppApi1F207F31GETuser1E5DEDDC": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/",
+              {
+                "Ref": "fastifyAppApiDeploymentStageprod9CC17FB8",
+              },
+              "/GET/user",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuserGETApiPermissionTestTestStackfastifyAppApi1F207F31GETuser8104AF56": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/test-invoke-stage/GET/user",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuserPOST8AE508AB": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "FastifyAppLambda6A8D8BC0",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "fastifyAppApiuser93025BEC",
+        },
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "fastifyAppApiuserPOSTApiPermissionTestStackfastifyAppApi1F207F31POSTuserE705F496": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/",
+              {
+                "Ref": "fastifyAppApiDeploymentStageprod9CC17FB8",
+              },
+              "/POST/user",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuserPOSTApiPermissionTestTestStackfastifyAppApi1F207F31POSTuserAA9300FE": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/test-invoke-stage/POST/user",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuserid3A88A7E8": {
+      "Properties": {
+        "ParentId": {
+          "Ref": "fastifyAppApiuser93025BEC",
+        },
+        "PathPart": "{id}",
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "fastifyAppApiuseridDELETEApiPermissionTestStackfastifyAppApi1F207F31DELETEuserid1D2B47ED": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/",
+              {
+                "Ref": "fastifyAppApiDeploymentStageprod9CC17FB8",
+              },
+              "/DELETE/user/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuseridDELETEApiPermissionTestTestStackfastifyAppApi1F207F31DELETEuseridE0606C52": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/test-invoke-stage/DELETE/user/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuseridDELETEC4DEADF2": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "DELETE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "FastifyAppLambda6A8D8BC0",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "fastifyAppApiuserid3A88A7E8",
+        },
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "fastifyAppApiuseridGET1F4C0B21": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "FastifyAppLambda6A8D8BC0",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "fastifyAppApiuserid3A88A7E8",
+        },
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "fastifyAppApiuseridGETApiPermissionTestStackfastifyAppApi1F207F31GETuserid38DC0690": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/",
+              {
+                "Ref": "fastifyAppApiDeploymentStageprod9CC17FB8",
+              },
+              "/GET/user/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuseridGETApiPermissionTestTestStackfastifyAppApi1F207F31GETuserid1626AC8F": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/test-invoke-stage/GET/user/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuseridPATCHApiPermissionTestStackfastifyAppApi1F207F31PATCHuserid147BE162": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/",
+              {
+                "Ref": "fastifyAppApiDeploymentStageprod9CC17FB8",
+              },
+              "/PATCH/user/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuseridPATCHApiPermissionTestTestStackfastifyAppApi1F207F31PATCHuserid418A0B5E": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/test-invoke-stage/PATCH/user/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuseridPATCHE922D388": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "PATCH",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "FastifyAppLambda6A8D8BC0",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "fastifyAppApiuserid3A88A7E8",
+        },
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "fastifyAppApiuseridPUT4A32714F": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "PUT",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "FastifyAppLambda6A8D8BC0",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "fastifyAppApiuserid3A88A7E8",
+        },
+        "RestApiId": {
+          "Ref": "fastifyAppApi4B7A160F",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "fastifyAppApiuseridPUTApiPermissionTestStackfastifyAppApi1F207F31PUTuserid090CB605": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/",
+              {
+                "Ref": "fastifyAppApiDeploymentStageprod9CC17FB8",
+              },
+              "/PUT/user/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "fastifyAppApiuseridPUTApiPermissionTestTestStackfastifyAppApi1F207F31PUTuseridD126A85D": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FastifyAppLambda6A8D8BC0",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "fastifyAppApi4B7A160F",
+              },
+              "/test-invoke-stage/PUT/user/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`snapshot test2 1`] = `
+{
+  "Outputs": {
+    "fastifyAppApiEndpointC51352AA": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "fastifyAppApi4B7A160F",
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "fastifyAppApiDeploymentStageprod9CC17FB8",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "FastifyAppLambda6A8D8BC0": {
+      "DependsOn": [
+        "FastifyAppLambdaServiceRole7FA32586",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "HASH-REPLACED.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DATABASE_URL": "postgres://dummy:5443/mydb",
+            "STAGE": "PRODUCTION",
+          },
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "FastifyAppLambdaServiceRole7FA32586",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs16.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "FastifyAppLambdaServiceRole7FA32586": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "fastifyAppApi4B7A160F": {
+      "Properties": {
+        "Name": "fastifyAppApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "fastifyAppApiANYApiPermissionTestStack2fastifyAppApiCC95ACA6ANY2B95E9A8": {
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
@@ -145,7 +1098,7 @@ exports[`snapshot test 1`] = `
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "fastifyAppApiANYApiPermissionTestTestStackfastifyAppApi1F207F31ANYF5B7426A": {
+    "fastifyAppApiANYApiPermissionTestTestStack2fastifyAppApiCC95ACA6ANY03324EAC": {
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
@@ -303,7 +1256,7 @@ exports[`snapshot test 1`] = `
       },
       "Type": "AWS::ApiGateway::Stage",
     },
-    "fastifyAppApiproxyANYApiPermissionTestStackfastifyAppApi1F207F31ANYproxyF14BC856": {
+    "fastifyAppApiproxyANYApiPermissionTestStack2fastifyAppApiCC95ACA6ANYproxy93C1BC7E": {
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
@@ -344,7 +1297,7 @@ exports[`snapshot test 1`] = `
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "fastifyAppApiproxyANYApiPermissionTestTestStackfastifyAppApi1F207F31ANYproxy7AB2ACF4": {
+    "fastifyAppApiproxyANYApiPermissionTestTestStack2fastifyAppApiCC95ACA6ANYproxyBC89A18A": {
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
