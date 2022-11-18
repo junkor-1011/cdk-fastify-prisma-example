@@ -8,7 +8,7 @@ import { withRefResolver } from 'fastify-zod';
 import { userSchemas } from '$fastify-app/modules/user/user.schema';
 import userRoutes from '$fastify-app/modules/user/user.route';
 
-const port: number = Number(process.env.PORT ?? 3000);
+const port = Number(process.env.PORT ?? 3000);
 
 export const server = fastify({
   logger: true,
