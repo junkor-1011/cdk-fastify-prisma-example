@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/nodejs:16
+FROM public.ecr.aws/lambda/nodejs:18
 
 COPY app.js package*.json ./
 # COPY pnpm-lock.yaml ./

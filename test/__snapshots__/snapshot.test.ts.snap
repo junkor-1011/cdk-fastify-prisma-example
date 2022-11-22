@@ -63,7 +63,7 @@ exports[`snapshot test 1`] = `
             "Arn",
           ],
         },
-        "Runtime": "nodejs16.x",
+        "Runtime": "nodejs18.x",
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -1051,7 +1051,7 @@ exports[`snapshot test 1`] = `
       "Properties": {
         "Code": {
           "ImageUri": {
-            "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:b081f94662b4200272e154147ffac90fb9c173c68ddd20708095ad7c5d7eadc1",
+            "Fn::Sub": "\${AWS::AccountId}.dkr.ecr.\${AWS::Region}.\${AWS::URLSuffix}/cdk-hnb659fds-container-assets-\${AWS::AccountId}-\${AWS::Region}:ea86b6d7b4db7654b600dd5e86896695cccef718d45370c491d3289ee963b564",
           },
         },
         "PackageType": "Image",
@@ -1189,7 +1189,7 @@ exports[`snapshot test2 1`] = `
             "Arn",
           ],
         },
-        "Runtime": "nodejs16.x",
+        "Runtime": "nodejs18.x",
       },
       "Type": "AWS::Lambda::Function",
     },
